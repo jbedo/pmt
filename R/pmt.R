@@ -12,7 +12,7 @@
 # ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 # OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
-pmt <- function(a, b) {
+pmt <- function(a, b, two.sided=T) {
   if(any(a == 0) | any(b == 0))
     stop("cannot handle 0 counts")
 
@@ -52,5 +52,7 @@ pmt <- function(a, b) {
   t1 <- mapply(function(xa, mu, rho) { i <- 0:xa; logsumexp(i * log(2 * mu) - lfactorial(i) - i * log(1 + rho))}, a, mu, rho)
   t2 <- mapply(function(xb, mu, rho) { j <- xb:(xb*100); logsumexp(j * log(2 * mu * rho) - lfactorial(j) - j * log(1 + rho))}, b, mu, rho)
 
-  (2*mu-t1-t2) / log(10)
+  ps <- (2*mu-t1-t2) / log(10)
+  if(!two.sided)ps[msk] <- NA
+  ps
 }
