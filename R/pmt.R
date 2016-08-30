@@ -12,7 +12,10 @@
 # ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
 # OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
-pmt <- function(a, b, two.sided=F) {
+pmt <- function(a, b) {
+  if(any(a == 0) | any(b == 0))
+    stop("cannot handle 0 counts")
+
   ce <- function(mu){
     pt1 <- mapply(function(xa, mu, rho) logsumexp(cumsum(log(((1 + rho) * (xa - (0:xa-1))/(2 * mu))))), a, mu, rho)
     pt2 <- mapply(function(xb, mu, rho) logsumexp(cumsum(log((2*mu*rho) / ((1 + rho)*(xb + (1:100)))))), b, mu, rho)
