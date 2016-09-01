@@ -14,7 +14,14 @@ pmt(a, b)
   \item{b}{
     Vector of counts
 }
+  \item{two.sided}{
+    If false tests the one-sided hypothesis that b > a. NA will be returned
+    for indices which are untestable.
 }
+  \item{signed}{
+    Set sign of returned log10 p-values to direction of change when doing a
+    two-sided test. Return value will be positive for b > a and negative for
+    a > b.
 \details{
   This function computes the Poisson Margin Test (PMT) for two sets of counts.
 }
