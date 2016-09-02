@@ -15,9 +15,11 @@
 pmt <- function(a, b, two.sided=T, signed=F) {
   if(any(a == 0) | any(b == 0))
     stop("cannot handle 0 counts")
+  if(length(a) != length(b))
+    stop("vectors must be same length")
 
   ce <- function(mu){
-    pt1 <- mapply(function(xa, mu, rho) logsumexp(cumsum(log(((1 + rho) * (xa - (0:xa-1))/(2 * mu))))), a, mu, rho)
+    pt1 <- mapply(function(xa, mu, rho) logsumexp(cumsum(log(((1 + rho) * (xa - (0:(xa-1)))/(2 * mu))))), a, mu, rho)
     pt2 <- mapply(function(xb, mu, rho) logsumexp(cumsum(log((2*mu*rho) / ((1 + rho)*(xb + (1:100)))))), b, mu, rho)
     rho + rho * (exp(pt1) - exp(pt2))
   }
