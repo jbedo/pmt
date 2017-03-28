@@ -54,7 +54,9 @@ pmt <- function(a, b, two.sided=T, signed=F) {
   t1 <- mapply(function(xa, mu, rho) { i <- 0:xa; logsumexp(i * log(2 * mu) - lfactorial(i) - i * log(1 + rho))}, a, mu, rho)
   t2 <- mapply(function(xb, mu, rho) { j <- xb:(xb*100); logsumexp(j * log(2 * mu * rho) - lfactorial(j) - j * log(1 + rho))}, b, mu, rho)
 
-  ps <- (2*mu-t1-t2) / log(10)
+  ps <- (2*mu-t1-t2)
+  ps <- ps - log1p(ps)
+  ps <- ps / log(10)
   if(!two.sided) ps[msk] <- NA
   else if(signed) ps <- ps * (1-2*msk)
   ps
